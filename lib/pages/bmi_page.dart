@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
+import 'package:bmi_calculator/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/calculate_button.dart';
@@ -7,6 +9,7 @@ import '../widgets/gender_view.dart';
 import '../widgets/global_app_bar.dart';
 import '../widgets/height_box.dart';
 import '../widgets/weight_and_age_view.dart';
+import 'result_page.dart';
 
 class BmiPage extends StatefulWidget {
   const BmiPage({super.key});
@@ -17,9 +20,11 @@ class BmiPage extends StatefulWidget {
 
 class _BmiPageState extends State<BmiPage> {
   double height = 170;
+  int weight = 60;
 
   @override
   Widget build(BuildContext context) {
+    log('Bmi page rebuilding...');
     return Scaffold(
       backgroundColor: const Color(0xff0a0e21),
       appBar: const GlobalAppBar(title: 'BMI CALCULATOR'),
@@ -37,7 +42,17 @@ class _BmiPageState extends State<BmiPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              const WeightAndAgeView(),
+              WeightAndAgeView(
+                weight: weight,
+                onIncrementWeight: () {
+                  weight++;
+                  setState(() {});
+                },
+                onDecrementWeight: () {
+                  weight--;
+                  setState(() {});
+                },
+              ),
             ],
           ),
         ),
@@ -46,6 +61,15 @@ class _BmiPageState extends State<BmiPage> {
         text: 'CALCULATE',
         onCalculate: () {
           log('Height: $height');
+          log('Weight: $weight');
+
+          final result = weight / math.pow(height.toMetr, 2);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ResultPage(result: result),
+            ),
+          );
         },
       ),
     );

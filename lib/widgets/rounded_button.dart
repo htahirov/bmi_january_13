@@ -14,6 +14,7 @@ class RoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: null,
       shape: const CircleBorder(),
       backgroundColor: const Color(0xff4c4f5e),
       foregroundColor: Colors.white,
